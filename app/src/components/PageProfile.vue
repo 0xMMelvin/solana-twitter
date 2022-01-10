@@ -1,14 +1,18 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
-import { fetchTweets } from '@/api'
+import { fetchTweets, authorFilter } from '@/api'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
+import { useWorkspace } from '@/composables'
 
 const tweets = ref([])
 const loading = ref(true)
+const workspace = useWorkspace()
+const { wallet } = workspace
 
 watchEffect(() => {
-  fetchTweets()
+  if (!wallet.value) return
+  fetchTweets(workspace, [authorFilter(wallet.value.publicKey.toBase58())])
     .then((fetchedTweets) => (tweets.value = fetchedTweets))
     .finally(() => (loading.value = false))
 })
@@ -17,9 +21,8 @@ const addTweet = (tweet) => tweets.value.push(tweet)
 </script>
 
 <template>
-  <!-- TODO: Check connected wallet -->
-  <div v-if="true" class="border-b px-8 py-4 bg-gray-50">
-    B1AfN7AgpMyctfFbjmvRAvE1yziZFDb9XCwydBjJwtRN
+  <div v-if="wallet" class="border-b px-8 py-4 bg-gray-50">
+    {{ wallet.publicKey.toBase58() }}
   </div>
   <TweetForm @added="addTweet"></TweetForm>
   <TweetList :tweets="tweets" :loading="loading"></TweetList>

@@ -16,7 +16,8 @@ module.exports = defineConfig({
         assert: false,
         process: false,
         util: false,
-        path: false
+        path: false,
+        stream: false
       }
     }
   }

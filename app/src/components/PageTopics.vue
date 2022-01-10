@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchTweets } from '@/api'
-import { useSlug, useFromRoute } from '@/composables'
+import { fetchTweets, topicFilter } from '@/api'
+import { useFromRoute, useSlug, useWorkspace } from '@/composables'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
 import TweetSearch from '@/components/TweetSearch'
@@ -14,6 +14,7 @@ const loading = ref(true)
 const topic = ref('')
 const slugTopic = useSlug(topic)
 const viewedTopic = ref('')
+const workspace = useWorkspace()
 
 // Actions.
 const search = () => {
@@ -24,8 +25,7 @@ const fetchTopicTweets = async () => {
   if (slugTopic.value === viewedTopic.value) return
   try {
     loading.value = true
-    const fetchedTweets = await fetchTweets()
-    tweets.value = fetchedTweets
+    tweets.value = await fetchTweets(workspace, [topicFilter(slugTopic.value)])
     viewedTopic.value = slugTopic.value
   } finally {
     loading.value = false

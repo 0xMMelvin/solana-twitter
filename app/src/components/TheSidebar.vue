@@ -1,4 +1,11 @@
-<script setup></script>
+<script setup>
+import {
+  WalletMultiButton,
+  WalletModalProvider
+} from '@solana/wallet-adapter-vue-ui'
+import { useWallet } from '@solana/wallet-adapter-vue'
+const { connected } = useWallet()
+</script>
 
 <template>
   <aside
@@ -130,7 +137,7 @@
       </router-link>
       <!-- TODO: Check connected wallet. -->
       <router-link
-        v-if="true"
+        v-if="connected"
         :to="{ name: 'Profile' }"
         class="rounded-full hover:bg-gray-100 p-3 md:w-full inline-flex items-center space-x-4"
         active-class="font-bold"
@@ -169,11 +176,9 @@
     </div>
     <div class="fixed bottom-8 right-8 md:static w-48 md:w-full">
       <!-- TODO: Connect wallet -->
-      <div
-        class="bg-pink-500 text-center w-full text-white rounded-full px-4 py-2"
-      >
-        Select a wallet
-      </div>
+      <WalletModalProvider>
+        <WalletMultiButton></WalletMultiButton>
+      </WalletModalProvider>
     </div>
   </aside>
 </template>
