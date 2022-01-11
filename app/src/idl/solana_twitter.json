@@ -1,0 +1,77 @@
+{
+  "version": "0.0.0",
+  "name": "solana_twitter",
+  "instructions": [
+    {
+      "name": "sendTweet",
+      "accounts": [
+        {
+          "name": "tweet",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "author",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "topic",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Tweet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "author",
+            "type": "publicKey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "topic",
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 300,
+      "name": "TopicTooLong",
+      "msg": "Topics can have a maximum length of 50 characters."
+    },
+    {
+      "code": 301,
+      "name": "ContentTooLong",
+      "msg": "Content can have a maximum length of 280 characters."
+    }
+  ],
+  "metadata": {
+    "address": "DRg7bGqRiVcV52Uepy6PfE1Kf68Lryp1Hez37SzMYFpW"
+  }
+}
